@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Reviewer Dashboard | Peer Code Review Tracker
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="../css/dashboard.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- Background Effects -->
+
+    <div class="background-glow glow-one"></div>
+
+    <div class="background-glow glow-two"></div>
+
+
+    <div class="dashboard">
+
+
+        <!-- ==================================================
+             SIDEBAR
+        =================================================== -->
+
+        <aside class="sidebar">
+
+
+            <!-- Brand -->
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    PR
+                </div>
+
+                <div>
+
+                    <h2>
+                        PeerReview
+                    </h2>
+
+                    <span>
+                        Code Growth Platform
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Profile -->
+
+            <div class="profile">
+
+                <div class="profile-avatar">
+                    AR
+                </div>
+
+                <div>
+
+                    <strong>
+                        Arun
+                    </strong>
+
+                    <span>
+                        Reviewer
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Navigation -->
+
+            <nav class="navigation">
+
+
+                <a
+                    href="#"
+                    class="nav-item active"
+                >
+
+                    <span>
+                        ▣
+                    </span>
+
+                    Reviewer Dashboard
+
+                </a>
+
+
+                <a
+                    href="#assigned"
+                    class="nav-item"
+                >
+
+                    <span>
+                        ⌘
+                    </span>
+
+                    PRs Assigned to Me
+
+                </a>
+
+
+                <a
+                    href="#pending"
+                    class="nav-item"
+                >
+
+                    <span>
+                        ⏳
+                    </span>
+
+                    Pending Reviews
+
+                </a>
+
+
+                <a
+                    href="#history"
+                    class="nav-item"
+                >
+
+                    <span>
+                        ◷
+                    </span>
+
+                    My Review History
+
+                </a>
+
+
+                <a
+                    href="#growth"
+                    class="nav-item"
+                >
+
+                    <span>
+                        📈
+                    </span>
+
+                    My Skill Growth
+
+                </a>
+
+
+            </nav>
+
+
+            <!-- Sidebar Bottom -->
+
+            <div class="sidebar-bottom">
+
+
+                <a
+                    href="#"
+                    class="nav-item"
+                >
+
+                    <span>
+                        ⚙
+                    </span>
+
+                    Settings
+
+                </a>
+
+
+                <a
+                    href="../index.html"
+                    class="nav-item logout"
+                >
+
+                    <span>
+                        ↪
+                    </span>
+
+                    Logout
+
+                </a>
+
+
+            </div>
+
+
+        </aside>
+
+
+
+        <!-- ==================================================
+             MAIN CONTENT
+        =================================================== -->
+
+        <main class="main-content">
+
+
+            <!-- Header -->
+
+            <header class="topbar">
+
+
+                <div>
+
+                    <p class="eyebrow">
+                        REVIEWER DASHBOARD
+                    </p>
+
+
+                    <h1>
+                        Good morning, Arun 👋
+                    </h1>
+
+
+                    <p class="header-subtitle">
+                        Here's what's waiting for your review.
+                    </p>
+
+                </div>
+
+
+                <div class="header-actions">
+
+
+                    <button
+                        class="icon-button"
+                        title="Notifications"
+                    >
+
+                        🔔
+
+                        <span class="notification-dot"></span>
+
+                    </button>
+
+
+                    <div class="header-avatar">
+                        AR
+                    </div>
+
+
+                </div>
+
+
+            </header>
+
+
+
+            <!-- ==================================================
+                 STAT CARDS
+            =================================================== -->
+
+            <section class="stats-grid">
+
+
+                <!-- Assigned PRs -->
+
+                <div class="stat-card">
+
+
+                    <div class="stat-icon blue">
+                        ⌘
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            PRs Assigned
+                        </span>
+
+
+                        <strong id="assignedPRCount">
+                            0
+                        </strong>
+
+
+                        <small class="positive">
+                            Active assignments
+                        </small>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- Pending Reviews -->
+
+                <div class="stat-card">
+
+
+                    <div class="stat-icon purple">
+                        ⏳
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Pending Reviews
+                        </span>
+
+
+                        <strong id="pendingReviewCount">
+                            0
+                        </strong>
+
+
+                        <small class="positive">
+                            Need your attention
+                        </small>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- Completed Reviews -->
+
+                <div class="stat-card">
+
+
+                    <div class="stat-icon green">
+                        ✓
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Reviews Completed
+                        </span>
+
+
+                        <strong id="completedReviewCount">
+                            0
+                        </strong>
+
+
+                        <small class="positive">
+                            Total completed
+                        </small>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- Reviewer Skill -->
+
+                <div class="stat-card">
+
+
+                    <div class="stat-icon orange">
+                        ★
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Reviewer Score
+                        </span>
+
+
+                        <strong id="reviewerSkillScore">
+                            0%
+                        </strong>
+
+
+                        <small class="positive">
+                            Review quality
+                        </small>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- ==================================================
+                 CONTENT GRID
+            =================================================== -->
+
+            <section class="content-grid">
+
+
+
+                <!-- ==================================================
+                     PRs ASSIGNED TO ME
+                =================================================== -->
+
+                <div
+                    class="panel pull-request-panel"
+                    id="assigned"
+                >
+
+
+                    <div class="panel-header">
+
+
+                        <div>
+
+                            <h2>
+                                PRs Assigned to Me
+                            </h2>
+
+
+                            <p>
+                                Pull requests waiting for your review
+                            </p>
+
+                        </div>
+
+
+                        <button class="view-button">
+                            View All
+                        </button>
+
+
+                    </div>
+
+
+
+                    <!-- Firebase PR list -->
+
+                    <div
+                        class="pr-list"
+                        id="assignedPRList"
+                    >
+
+
+                        <!--
+                            Firebase data will be inserted here
+                            by reviewer-dashboard.js
+                        -->
+
+
+                        <div class="empty-pr">
+
+
+                            <div class="empty-icon">
+                                📂
+                            </div>
+
+
+                            <strong>
+                                Loading Pull Requests...
+                            </strong>
+
+
+                            <span>
+                                Checking your assigned reviews.
+                            </span>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ==================================================
+                     PENDING REVIEWS
+                =================================================== -->
+
+                <div
+                    class="panel skill-panel"
+                    id="pending"
+                >
+
+
+                    <div class="panel-header">
+
+
+                        <div>
+
+                            <h2>
+                                Pending Reviews
+                            </h2>
+
+
+                            <p>
+                                Reviews requiring your attention
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            class="more-button"
+                            title="More options"
+                        >
+                            ⋮
+                        </button>
+
+
+                    </div>
+
+
+
+                    <div class="review-queue">
+
+
+                        <!-- Pending Review 1 -->
+
+                        <div class="queue-item">
+
+
+                            <div class="queue-icon">
+                                ⏳
+                            </div>
+
+
+                            <div>
+
+                                <strong>
+                                    Waiting for Firebase data
+                                </strong>
+
+
+                                <p>
+                                    Assigned reviews will appear here.
+                                </p>
+
+                            </div>
+
+
+                            <span class="status open-status">
+                                Pending
+                            </span>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ==================================================
+                     REVIEW HISTORY
+                =================================================== -->
+
+                <div
+                    class="panel feedback-panel"
+                    id="history"
+                >
+
+
+                    <div class="panel-header">
+
+
+                        <div>
+
+                            <h2>
+                                My Review History
+                            </h2>
+
+
+                            <p>
+                                Your recent completed reviews
+                            </p>
+
+                        </div>
+
+
+                        <button class="view-button">
+                            View All
+                        </button>
+
+
+                    </div>
+
+
+
+                    <div class="feedback-item">
+
+
+                        <div class="feedback-avatar">
+                            ✓
+                        </div>
+
+
+                        <div class="feedback-content">
+
+
+                            <strong>
+                                Review history
+                            </strong>
+
+
+                            <p>
+                                Your completed reviews will appear here
+                                after you submit feedback.
+                            </p>
+
+
+                            <div class="feedback-meta">
+
+
+                                <span class="category">
+                                    Firebase
+                                </span>
+
+
+                                <span>
+                                    No reviews yet
+                                </span>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ==================================================
+                     SKILL GROWTH
+                =================================================== -->
+
+                <div
+                    class="panel history-panel"
+                    id="growth"
+                >
+
+
+                    <div class="panel-header">
+
+
+                        <div>
+
+                            <h2>
+                                My Skill Growth
+                            </h2>
+
+
+                            <p>
+                                Review quality and activity
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            class="more-button"
+                            title="More options"
+                        >
+                            ⋮
+                        </button>
+
+
+                    </div>
+
+
+
+                    <!-- Skill Score -->
+
+                    <div class="skill-score">
+
+
+                        <div class="score-circle">
+
+                            <span id="skillScoreCircle">
+                                0%
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Reviewer Skill Score
+                            </strong>
+
+
+                            <p>
+                                Your review quality will be
+                                calculated from your review feedback.
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- Code Quality -->
+
+                    <div class="skill-row">
+
+
+                        <div>
+
+                            <span>
+                                Code Quality
+                            </span>
+
+
+                            <strong>
+                                0%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="progress">
+
+
+                            <div
+                                class="progress-bar blue-progress"
+                                style="width: 0%"
+                            ></div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- Testing -->
+
+                    <div class="skill-row">
+
+
+                        <div>
+
+                            <span>
+                                Testing
+                            </span>
+
+
+                            <strong>
+                                0%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="progress">
+
+
+                            <div
+                                class="progress-bar purple-progress"
+                                style="width: 0%"
+                            ></div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- Documentation -->
+
+                    <div class="skill-row">
+
+
+                        <div>
+
+                            <span>
+                                Documentation
+                            </span>
+
+
+                            <strong>
+                                0%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="progress">
+
+
+                            <div
+                                class="progress-bar green-progress"
+                                style="width: 0%"
+                            ></div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- Performance -->
+
+                    <div class="skill-row">
+
+
+                        <div>
+
+                            <span>
+                                Performance
+                            </span>
+
+
+                            <strong>
+                                0%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="progress">
+
+
+                            <div
+                                class="progress-bar orange-progress"
+                                style="width: 0%"
+                            ></div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+        </main>
+
+
+    </div>
+
+
+
+    <!-- ==================================================
+         FIREBASE REVIEWER DASHBOARD SCRIPT
+    =================================================== -->
+
+    <script
+        type="module"
+        src="../js/reviewer-dashboard.js"
+    ></script>
+
+
+</body>
+
+</html>

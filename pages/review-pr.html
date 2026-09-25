@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Review Pull Request | PeerReview
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="../css/dashboard.css"
+    >
+
+    <style>
+
+        .review-page {
+            max-width: 1200px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 24px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-button:hover {
+            color: #38bdf8;
+        }
+
+        .pr-title-section {
+            margin-bottom: 28px;
+        }
+
+        .pr-title-section h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .pr-meta {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .github-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 18px;
+            padding: 12px 18px;
+            border-radius: 10px;
+            background: linear-gradient(
+                135deg,
+                #2563eb,
+                #7c3aed
+            );
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.25s;
+        }
+
+        .github-button:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 10px 30px rgba(59, 130, 246, 0.25);
+        }
+
+        .pr-details {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .detail-card {
+            padding: 20px;
+            border-radius: 14px;
+            background: #111827;
+            border: 1px solid #1e293b;
+        }
+
+        .detail-card span {
+            display: block;
+            color: #94a3b8;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .detail-card strong {
+            font-size: 20px;
+        }
+
+        .review-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .review-panel {
+            padding: 26px;
+            border-radius: 16px;
+            background: #111827;
+            border: 1px solid #1e293b;
+        }
+
+        .review-panel h2 {
+            margin-bottom: 8px;
+        }
+
+        .review-panel > p {
+            color: #94a3b8;
+            margin-bottom: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: white;
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #38bdf8;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .approve-button,
+        .changes-button {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .approve-button {
+            background: #16a34a;
+        }
+
+        .changes-button {
+            background: #dc2626;
+        }
+
+        .approve-button:hover,
+        .changes-button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        .message {
+            margin-top: 18px;
+            padding: 12px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .success-message {
+            display: block;
+            background: rgba(22, 163, 74, 0.15);
+            color: #4ade80;
+        }
+
+        .error-message {
+            display: block;
+            background: rgba(220, 38, 38, 0.15);
+            color: #f87171;
+        }
+
+        @media (max-width: 900px) {
+
+            .pr-details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .review-layout {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .pr-details {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="background-glow glow-one"></div>
+
+    <div class="background-glow glow-two"></div>
+
+
+    <div class="dashboard">
+
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    PR
+                </div>
+
+                <div>
+
+                    <h2>
+                        PeerReview
+                    </h2>
+
+                    <span>
+                        Code Growth Platform
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="profile">
+
+                <div class="profile-avatar">
+                    AR
+                </div>
+
+                <div>
+
+                    <strong>
+                        Arun
+                    </strong>
+
+                    <span>
+                        Reviewer
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <nav class="navigation">
+
+                <a
+                    href="reviewer-dashboard.html"
+                    class="nav-item"
+                >
+                    <span>▣</span>
+                    Reviewer Dashboard
+                </a>
+
+                <a
+                    href="reviewer-dashboard.html#assigned"
+                    class="nav-item active"
+                >
+                    <span>⌘</span>
+                    PRs Assigned to Me
+                </a>
+
+                <a
+                    href="reviewer-dashboard.html#pending"
+                    class="nav-item"
+                >
+                    <span>⏳</span>
+                    Pending Reviews
+                </a>
+
+                <a
+                    href="reviewer-dashboard.html#history"
+                    class="nav-item"
+                >
+                    <span>◷</span>
+                    My Review History
+                </a>
+
+                <a
+                    href="reviewer-dashboard.html#growth"
+                    class="nav-item"
+                >
+                    <span>📈</span>
+                    My Skill Growth
+                </a>
+
+            </nav>
+
+
+            <div class="sidebar-bottom">
+
+                <a
+                    href="#"
+                    class="nav-item"
+                >
+                    <span>⚙</span>
+                    Settings
+                </a>
+
+                <a
+                    href="../index.html"
+                    class="nav-item logout"
+                >
+                    <span>↪</span>
+                    Logout
+                </a>
+
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN -->
+
+        <main class="main-content">
+
+
+            <div class="review-page">
+
+
+                <a
+                    href="reviewer-dashboard.html"
+                    class="back-button"
+                >
+                    ← Back to Reviewer Dashboard
+                </a>
+
+
+                <!-- PR HEADER -->
+
+                <section class="pr-title-section">
+
+                    <p class="eyebrow">
+                        PULL REQUEST REVIEW
+                    </p>
+
+                    <h1 id="prTitle">
+                        Loading Pull Request...
+                    </h1>
+
+                    <p
+                        class="pr-meta"
+                        id="prMeta"
+                    >
+                        Loading information...
+                    </p>
+
+
+                    <a
+                        href="#"
+                        target="_blank"
+                        id="githubButton"
+                        class="github-button"
+                    >
+                        🔗 View on GitHub
+                    </a>
+
+                </section>
+
+
+                <!-- PR DETAILS -->
+
+                <section class="pr-details">
+
+
+                    <div class="detail-card">
+
+                        <span>
+                            Pull Request
+                        </span>
+
+                        <strong id="prNumber">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-card">
+
+                        <span>
+                            Repository
+                        </span>
+
+                        <strong id="repository">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-card">
+
+                        <span>
+                            Status
+                        </span>
+
+                        <strong id="prStatus">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-card">
+
+                        <span>
+                            Developer
+                        </span>
+
+                        <strong id="developerName">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- REVIEW AREA -->
+
+                <section class="review-layout">
+
+
+                    <!-- PR INFORMATION -->
+
+                    <div class="review-panel">
+
+                        <h2>
+                            Code Review
+                        </h2>
+
+                        <p>
+                            Review the pull request on GitHub
+                            before submitting your feedback.
+                        </p>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                What did you check?
+                            </label>
+
+                            <ul>
+
+                                <li>
+                                    Changed files
+                                </li>
+
+                                <li>
+                                    Added and deleted lines
+                                </li>
+
+                                <li>
+                                    Code changes
+                                </li>
+
+                                <li>
+                                    Existing code
+                                </li>
+
+                                <li>
+                                    Testing
+                                </li>
+
+                                <li>
+                                    Documentation
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- FEEDBACK -->
+
+                    <div class="review-panel">
+
+                        <h2>
+                            Review Feedback
+                        </h2>
+
+                        <p>
+                            Add structured feedback for the developer.
+                        </p>
+
+
+                        <div class="form-group">
+
+                            <label for="category">
+                                Feedback Category
+                            </label>
+
+                            <select id="category">
+
+                                <option value="Code Quality">
+                                    Code Quality
+                                </option>
+
+                                <option value="Testing">
+                                    Testing
+                                </option>
+
+                                <option value="Security">
+                                    Security
+                                </option>
+
+                                <option value="Performance">
+                                    Performance
+                                </option>
+
+                                <option value="Documentation">
+                                    Documentation
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="feedback">
+                                Your Feedback
+                            </label>
+
+                            <textarea
+                                id="feedback"
+                                placeholder="Write your review feedback here..."
+                            ></textarea>
+
+                        </div>
+
+
+                        <div class="action-buttons">
+
+                            <button
+                                class="approve-button"
+                                id="approveButton"
+                            >
+                                ✓ Approve
+                            </button>
+
+
+                            <button
+                                class="changes-button"
+                                id="changesButton"
+                            >
+                                ✕ Request Changes
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            id="message"
+                            class="message"
+                        ></div>
+
+                    </div>
+
+
+                </section>
+
+
+            </div>
+
+
+        </main>
+
+
+    </div>
+
+
+    <script
+        type="module"
+        src="../js/review-pr.js"
+    ></script>
+
+
+</body>
+
+</html>

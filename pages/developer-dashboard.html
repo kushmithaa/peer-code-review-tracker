@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Developer Dashboard | Peer Code Review Tracker</title>
+
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+
+<body>
+
+    <!-- Background Effects -->
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
+
+    <div class="dashboard">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+
+            <div class="brand">
+                <div class="brand-icon">
+                    PR
+                </div>
+
+                <div>
+                    <h2>PeerReview</h2>
+                    <span>Code Growth Platform</span>
+                </div>
+            </div>
+
+            <div class="profile">
+
+                <div class="profile-avatar">
+                    KN
+                </div>
+
+                <div>
+                    <strong>Kushmitha</strong>
+                    <span>Developer</span>
+                </div>
+
+            </div>
+
+            <nav class="navigation">
+
+                <a href="#" class="nav-item active">
+                    <span>▣</span>
+                    My Dashboard
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span>⌘</span>
+                    My Pull Requests
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span>💬</span>
+                    Review Feedback
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span>📈</span>
+                    Skill Growth
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span>◷</span>
+                    Review History
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <a href="#" class="nav-item">
+                    <span>⚙</span>
+                    Settings
+                </a>
+
+                <a href="../index.html" class="nav-item logout">
+                    <span>↪</span>
+                    Logout
+                </a>
+
+            </div>
+
+        </aside>
+
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Header -->
+            <header class="topbar">
+
+                <div>
+
+                    <p class="eyebrow">
+                        DEVELOPER DASHBOARD
+                    </p>
+
+                    <h1>
+                        Good morning, Kushmitha 👋
+                    </h1>
+
+                    <p class="header-subtitle">
+                        Here's what's happening with your code reviews.
+                    </p>
+
+                </div>
+
+                <div class="header-actions">
+
+                    <button class="icon-button">
+                        🔔
+                        <span class="notification-dot"></span>
+                    </button>
+
+                    <div class="header-avatar">
+                        KN
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- Stats -->
+            <section class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-icon blue">
+                        ⌘
+                    </div>
+
+                    <div>
+                        <span>Total Pull Requests</span>
+                        <strong>24</strong>
+                        <small class="positive">
+                            ↑ 12% this month
+                        </small>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon purple">
+                        💬
+                    </div>
+
+                    <div>
+                        <span>Review Feedback</span>
+                        <strong>47</strong>
+                        <small class="positive">
+                            ↑ 8 new feedback
+                        </small>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon green">
+                        ✓
+                    </div>
+
+                    <div>
+                        <span>Reviews Completed</span>
+                        <strong>18</strong>
+                        <small class="positive">
+                            92% completion
+                        </small>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon orange">
+                        ★
+                    </div>
+
+                    <div>
+                        <span>Skill Score</span>
+                        <strong>84%</strong>
+                        <small class="positive">
+                            ↑ 6.4% growth
+                        </small>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- Main Grid -->
+            <section class="content-grid">
+
+
+                <!-- Pull Requests -->
+                <div class="panel pull-request-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <h2>My Pull Requests</h2>
+                            <p>Recent GitHub pull requests</p>
+                        </div>
+
+                        <button class="view-button">
+                            View All
+                        </button>
+
+                    </div>
+
+
+                    <div class="pr-list">
+
+                        <div class="pr-item">
+
+                            <div class="pr-status open">
+                                ●
+                            </div>
+
+                            <div class="pr-info">
+
+                                <strong>
+                                    Improve authentication flow
+                                </strong>
+
+                                <span>
+                                    #PR-142 · peer-code-review
+                                </span>
+
+                                <div class="tags">
+
+                                    <span class="tag blue-tag">
+                                        Authentication
+                                    </span>
+
+                                    <span class="tag purple-tag">
+                                        JavaScript
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="pr-state">
+                                <span class="status open-status">
+                                    Open
+                                </span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="pr-item">
+
+                            <div class="pr-status review">
+                                ●
+                            </div>
+
+                            <div class="pr-info">
+
+                                <strong>
+                                    Update dashboard components
+                                </strong>
+
+                                <span>
+                                    #PR-139 · peer-code-review
+                                </span>
+
+                                <div class="tags">
+
+                                    <span class="tag green-tag">
+                                        UI
+                                    </span>
+
+                                    <span class="tag blue-tag">
+                                        React
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="pr-state">
+                                <span class="status review-status">
+                                    In Review
+                                </span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="pr-item">
+
+                            <div class="pr-status merged">
+                                ●
+                            </div>
+
+                            <div class="pr-info">
+
+                                <strong>
+                                    Add user profile module
+                                </strong>
+
+                                <span>
+                                    #PR-135 · peer-code-review
+                                </span>
+
+                                <div class="tags">
+
+                                    <span class="tag orange-tag">
+                                        Backend
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="pr-state">
+                                <span class="status merged-status">
+                                    Merged
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Skill Growth -->
+                <div class="panel skill-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <h2>My Skill Growth</h2>
+                            <p>Current development areas</p>
+                        </div>
+
+                        <button class="more-button">
+                            ⋮
+                        </button>
+
+                    </div>
+
+
+                    <div class="skill-score">
+
+                        <div class="score-circle">
+                            <span>84%</span>
+                        </div>
+
+                        <div>
+                            <strong>Overall Skill Score</strong>
+                            <p>
+                                You're improving consistently.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="skill-row">
+
+                        <div>
+                            <span>Code Quality</span>
+                            <strong>88%</strong>
+                        </div>
+
+                        <div class="progress">
+                            <div
+                                class="progress-bar blue-progress"
+                                style="width: 88%">
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="skill-row">
+
+                        <div>
+                            <span>Testing</span>
+                            <strong>76%</strong>
+                        </div>
+
+                        <div class="progress">
+                            <div
+                                class="progress-bar purple-progress"
+                                style="width: 76%">
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="skill-row">
+
+                        <div>
+                            <span>Documentation</span>
+                            <strong>82%</strong>
+                        </div>
+
+                        <div class="progress">
+                            <div
+                                class="progress-bar green-progress"
+                                style="width: 82%">
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="skill-row">
+
+                        <div>
+                            <span>Performance</span>
+                            <strong>71%</strong>
+                        </div>
+
+                        <div class="progress">
+                            <div
+                                class="progress-bar orange-progress"
+                                style="width: 71%">
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Feedback -->
+                <div class="panel feedback-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <h2>Recent Review Feedback</h2>
+                            <p>Latest comments from reviewers</p>
+                        </div>
+
+                        <button class="view-button">
+                            View All
+                        </button>
+
+                    </div>
+
+
+                    <div class="feedback-item">
+
+                        <div class="feedback-avatar">
+                            AR
+                        </div>
+
+                        <div class="feedback-content">
+
+                            <strong>
+                                Arun reviewed your PR
+                            </strong>
+
+                            <p>
+                                Consider extracting this logic into
+                                a reusable function.
+                            </p>
+
+                            <div class="feedback-meta">
+
+                                <span class="category">
+                                    Code Quality
+                                </span>
+
+                                <span>
+                                    2 hours ago
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="feedback-item">
+
+                        <div class="feedback-avatar purple-avatar">
+                            SK
+                        </div>
+
+                        <div class="feedback-content">
+
+                            <strong>
+                                Sneha reviewed your PR
+                            </strong>
+
+                            <p>
+                                Please add unit tests for this
+                                authentication method.
+                            </p>
+
+                            <div class="feedback-meta">
+
+                                <span class="category testing">
+                                    Testing
+                                </span>
+
+                                <span>
+                                    Yesterday
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Review History -->
+                <div class="panel history-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <h2>Review History</h2>
+                            <p>Your recent review activity</p>
+                        </div>
+
+                        <button class="more-button">
+                            ⋮
+                        </button>
+
+                    </div>
+
+
+                    <div class="timeline">
+
+                        <div class="timeline-item">
+
+                            <div class="timeline-dot success">
+                                ✓
+                            </div>
+
+                            <div>
+                                <strong>
+                                    PR #142 approved
+                                </strong>
+
+                                <span>
+                                    Reviewed by Arun · Today
+                                </span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="timeline-item">
+
+                            <div class="timeline-dot warning">
+                                !
+                            </div>
+
+                            <div>
+                                <strong>
+                                    Changes requested on PR #139
+                                </strong>
+
+                                <span>
+                                    Reviewed by Sneha · Yesterday
+                                </span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="timeline-item">
+
+                            <div class="timeline-dot success">
+                                ✓
+                            </div>
+
+                            <div>
+                                <strong>
+                                    PR #135 merged
+                                </strong>
+
+                                <span>
+                                    Reviewed by Arun · 3 days ago
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

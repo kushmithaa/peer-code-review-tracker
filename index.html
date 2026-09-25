@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | Peer Code Review Tracker</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="auth-container">
+
+        <div class="auth-card">
+
+            <div class="brand-small">
+                <div class="brand-logo">
+                    PR
+                </div>
+            </div>
+
+            <h1>Welcome Back</h1>
+
+            <p class="subtitle">
+                Sign in to your Peer Code Review workspace
+            </p>
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email"
+                    autocomplete="email"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                >
+
+            </div>
+
+            <button id="loginBtn">
+                Login
+            </button>
+
+            <p id="message"></p>
+
+            <div class="divider">
+                <span>OR</span>
+            </div>
+
+            <a
+                href="pages/register.html"
+                class="register-link"
+            >
+                Create a New Account
+            </a>
+
+            <p class="footer-text">
+                Peer Code Review & Skill-Growth Tracker
+            </p>
+
+        </div>
+
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+
+</body>
+
+</html>
