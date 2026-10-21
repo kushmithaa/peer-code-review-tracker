@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <title>Developer Dashboard | PeerReview</title>
+    <link rel="stylesheet" href="../css/app.css">
+    <link rel="stylesheet" href="../css/roles.css">
+    <script src="../js/mode.js"></script>
+</head>
+
+<body data-role="developer">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <div class="dev-shell">
+
+        <aside class="dev-sidebar">
+            <a class="brand" href="developer-dashboard.html"><span class="brand-mark">PR</span><span><b>PeerReview</b><small>Developer workspace</small></span></a>
+            <nav class="side-nav" aria-label="Developer sections">
+            <a href="#overview" data-view="overview" class="active"><span class="ico"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>Overview</a>
+            <a href="#prs" data-view="prs" class=""><span class="ico"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M6 8.5v7"/><path d="M18 15.5V9a3 3 0 0 0-3-3h-3"/><path d="M14 3.5L11.5 6 14 8.5"/></svg></span>My Pull Requests</a>
+            <a href="#feedback" data-view="feedback" class=""><span class="ico"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.5 7.2L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></span>My Review Feedback</a>
+            <a href="#skills" data-view="skills" class=""><span class="ico"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>My Skill Growth</a>
+            <a href="#history" data-view="history" class=""><span class="ico"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>My Review History</a>
+            </nav>
+            <div class="side-foot">
+                <div class="row profile-mini">
+                    <span class="avatar" data-user-initials>?</span>
+                    <span><b data-user-name>Loading...</b><br><small class="muted">Developer</small></span>
+                </div>
+                <a href="../index.html" id="logoutLink" class="btn ghost sm"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5V3h4M16 17l5-5-5-5M21 12H9"/></svg> Logout</a>
+            </div>
+        </aside>
+
+        <main id="main" class="dev-main">
+            <div id="pageNotice"></div>
+
+            <!-- OVERVIEW -->
+            <section class="view active" id="view-overview">
+                <header class="dev-hero">
+                    <div>
+                        <h1 id="greeting">Welcome back</h1>
+                        <p id="heroText">Your pull requests, review feedback and skill growth in one place.</p>
+                    </div>
+                    <button class="btn primary lg" type="button" id="openPrDialog"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Submit a pull request</button>
+                </header>
+
+                <div class="grid" style="margin-top:18px">
+            <div class="card stat span-3"><span class="k">My pull requests</span><span class="v" id="statTotal">0</span><span class="s">All PRs you own</span></div>
+            <div class="card stat span-3"><span class="k">Pending reviews</span><span class="v" id="statPending">0</span><span class="s">Open or In Review</span></div>
+            <div class="card stat span-3"><span class="k">Approved</span><span class="v" id="statApproved">0</span><span class="s">Approved or merged</span></div>
+            <div class="card stat span-3"><span class="k">Changes requested</span><span class="v" id="statChanges">0</span><span class="s">Need your attention</span></div>
+
+                    <section class="card span-4" aria-labelledby="h-profile">
+                        <div class="card-head"><div><h2 id="h-profile">Developer profile</h2></div></div>
+                        <div id="profileCard" class="profile-card"></div>
+                    </section>
+
+                    <section class="card span-8" aria-labelledby="h-skill">
+                        <div class="card-head"><div><h2 id="h-skill">Skill growth</h2><p>From reviewer ratings on your pull requests</p></div>
+                            <div class="actions"><a class="btn sm" href="#skills">Full breakdown</a></div></div>
+                        <div id="overviewSkills"></div>
+                    </section>
+
+                    <section class="card span-7" aria-labelledby="h-fb">
+                        <div class="card-head"><div><h2 id="h-fb">Recent review feedback</h2></div>
+                            <div class="actions"><a class="btn sm" href="#feedback">All feedback</a></div></div>
+                        <div id="recentFeedback" class="stack"></div>
+                    </section>
+
+                    <section class="card span-5" aria-labelledby="h-act">
+                        <div class="card-head"><div><h2 id="h-act">Recent activity</h2></div></div>
+                        <div id="timeline"></div>
+                    </section>
+
+                    <section class="card span-12" aria-labelledby="h-heat">
+                        <div class="card-head"><div><h2 id="h-heat">Contribution activity</h2><p>Pull requests submitted and reviews received, last 14 weeks</p></div></div>
+                        <div id="heatmap"></div>
+                    </section>
+                </div>
+            </section>
+
+            <!-- MY PULL REQUESTS -->
+            <section class="view" id="view-prs">
+                <div class="card">
+                    <div class="card-head"><div><h2>My Pull Requests</h2><p>Pull requests you own and where each one stands</p></div>
+                        <div class="actions"><button class="btn primary" type="button" id="openPrDialog2"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Add pull request</button></div></div>
+                    <div class="toolbar">
+                        <div class="search"><input type="search" id="searchPrs" class="input" placeholder="Search title or repository" aria-label="Search pull requests"></div>
+                        <select id="prStatusFilter" class="select" aria-label="Filter by status">
+                            <option value="all">All statuses</option>
+                            <option value="Open">Open</option>
+                            <option value="In Review">In Review</option>
+                            <option value="Changes Requested">Changes Requested</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Merged">Merged</option>
+                        </select>
+                    </div>
+                    <div class="stack" id="prList"></div>
+                </div>
+            </section>
+
+            <!-- MY REVIEW FEEDBACK -->
+            <section class="view" id="view-feedback">
+                <div class="card">
+                    <div class="card-head"><div><h2>My Review Feedback</h2><p>The latest review on each of your pull requests</p></div></div>
+                    <div class="stack" id="feedbackList"></div>
+                </div>
+            </section>
+
+            <!-- MY SKILL GROWTH -->
+            <section class="view" id="view-skills">
+                <div class="card">
+                    <div class="card-head"><div><h2>My Skill Growth</h2><p>Calculated only from the 1–5 ratings reviewers saved on your pull requests</p></div></div>
+                    <div id="skillBlock"></div>
+                </div>
+            </section>
+
+            <!-- MY REVIEW HISTORY -->
+            <section class="view" id="view-history">
+                <div class="card">
+                    <div class="card-head"><div><h2>My Review History</h2><p>Every review written about your pull requests</p></div></div>
+                    <div class="toolbar">
+                        <div class="search"><input type="search" id="searchHistory" class="input" placeholder="Search title, feedback or reviewer" aria-label="Search review history"></div>
+                        <select id="historyStatus" class="select" aria-label="Filter by decision">
+                            <option value="all">All decisions</option>
+                            <option value="approved">Approved</option>
+                            <option value="changes requested">Changes Requested</option>
+                        </select>
+                        <select id="historyCategory" class="select" aria-label="Filter by category">
+                            <option value="all">All categories</option>
+                            <option value="code quality">Code Quality</option>
+                            <option value="readability">Readability</option>
+                            <option value="performance">Performance</option>
+                            <option value="security">Security</option>
+                            <option value="testing">Testing</option>
+                            <option value="documentation">Documentation</option>
+                        </select>
+                    </div>
+                    <p class="muted small" id="historyCount" style="margin-bottom:12px"></p>
+                    <div class="stack" id="historyList"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <dialog id="prDialog" aria-labelledby="dlgTitle">
+        <div class="dialog-body">
+            <div class="card-head"><div><h2 id="dlgTitle">Submit a pull request</h2><p>Register a GitHub pull request so a reviewer can pick it up</p></div>
+                <button class="btn ghost sm" type="button" data-close-dialog aria-label="Close dialog">✕</button></div>
+            <div id="prFormHost"></div>
+        </div>
+    </dialog>
+
+    <script type="module" src="../js/developer-dashboard.js"></script>
+</body>
+
+</html>

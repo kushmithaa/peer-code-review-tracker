@@ -1,0 +1,38 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "emulators": {
+    "firestore": {
+      "port": 8080
+    },
+    "auth": {
+      "port": 9099
+    },
+    "ui": {
+      "enabled": false
+    },
+    "singleProjectMode": true
+  },
+  "hosting": {
+    "public": ".",
+    "cleanUrls": true,
+    "ignore": [
+      "firebase.json",
+      "firestore.*",
+      "**/.*",
+      "**/node_modules/**",
+      "tests/**",
+      "scripts/**",
+      "*.md",
+      "package*.json",
+      "playwright.config.*",
+      "test-results/**",
+      "playwright-report/**",
+      "*.log",
+      "SECURITY-AUDIT.md",
+      ".github/**"
+    ]
+  }
+}

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <title>Review Pull Request | PeerReview</title>
+    <link rel="stylesheet" href="../css/app.css">
+    <link rel="stylesheet" href="../css/roles.css">
+    <script src="../js/mode.js"></script>
+</head>
+
+<body data-role="reviewer">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="rev-topbar">
+        <a class="brand" href="reviewer-dashboard.html"><span class="brand-mark">PR</span><span><b>PeerReview</b><small>Reviewer</small></span></a>
+        <nav class="rev-nav" aria-label="Reviewer sections">
+            <a href="reviewer-dashboard.html" class=""><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13l3-8h12l3 8v6H3z"/><path d="M3 13h5l1 3h6l1-3h5"/></svg>Dashboard</a>
+            <a href="assigned-prs.html" class=""><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M6 8.5v7"/><path d="M18 15.5V9a3 3 0 0 0-3-3h-3"/><path d="M14 3.5L11.5 6 14 8.5"/></svg>Assigned to me</a>
+            <a href="pending-reviews.html" class="active" aria-current="page"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Pending reviews</a>
+            <a href="review-history.html" class=""><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>My review history</a>
+            <a href="skill-growth.html" class=""><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>My skill growth</a>
+        </nav>
+        <div class="rev-user">
+            <span class="name" data-user-name>Loading...</span>
+            <span class="avatar" data-user-initials>?</span>
+            <a href="../index.html" id="logoutLink" class="btn ghost sm">Logout</a>
+        </div>
+    </header>
+
+    <main id="main" class="rev-main">
+        <p style="margin-bottom:10px"><a href="pending-reviews.html">← Back to pending reviews</a></p>
+        <header style="margin-bottom:20px">
+            <p class="chip accent" style="margin-bottom:10px">PULL REQUEST REVIEW</p>
+            <h1 id="prTitle">Loading Pull Request...</h1>
+            <p class="muted" id="prMeta">Loading information...</p>
+        </header>
+
+        <div class="rev-layout">
+            <div class="stack lg">
+                <section class="card" aria-labelledby="h-pr">
+                    <div class="card-head"><div><h2 id="h-pr">Pull request</h2></div>
+                        <div class="actions"><a id="githubButton" class="btn primary" href="#" target="_blank" rel="noopener noreferrer">View on GitHub ↗</a></div></div>
+                    <div class="grid" style="gap:14px">
+                        <div class="span-3"><span class="label">Number</span><p id="prNumber">—</p></div>
+                        <div class="span-3"><span class="label">Repository</span><p id="repository">—</p></div>
+                        <div class="span-3"><span class="label">Developer</span><p id="developerName">—</p></div>
+                        <div class="span-3"><span class="label">App status</span><p id="prStatus">—</p></div>
+                    </div>
+                    <p class="muted" id="prDescription" style="margin-top:14px"></p>
+                    <div class="chips" id="prChips" style="margin-top:12px"></div>
+                    <p class="notice" style="margin-top:16px">The status above is this app's own review status. Submitting a review here does <strong>not</strong> approve or comment on the real GitHub pull request.</p>
+                </section>
+
+                <section class="card" id="githubDetails" aria-labelledby="h-gh">
+                    <div class="card-head"><div><h2 id="h-gh">GitHub details</h2><p>Live data from GitHub's public API</p></div></div>
+                    <div id="githubInfo" class="muted">Loading details from GitHub...</div>
+                </section>
+
+                <section class="card" aria-labelledby="h-form">
+                    <div class="card-head"><div><h2 id="h-form">Your review</h2><p>Rate the areas you assessed (1 = significant problems, 5 = excellent; “–” = not assessed), then write your feedback.</p></div></div>
+                    <form id="reviewForm" novalidate>
+                        <div id="ratingRows">
+                        <div class="rating-row" data-category="Code Quality">
+                            <div><div class="name" id="lbl-code-quality">Code Quality</div></div>
+                            <div class="seg" role="radiogroup" aria-labelledby="lbl-code-quality"><label><input type="radio" name="rating-code-quality" value="" checked><span title="Not assessed">–</span></label><label><input type="radio" name="rating-code-quality" value="1"><span>1</span></label><label><input type="radio" name="rating-code-quality" value="2"><span>2</span></label><label><input type="radio" name="rating-code-quality" value="3"><span>3</span></label><label><input type="radio" name="rating-code-quality" value="4"><span>4</span></label><label><input type="radio" name="rating-code-quality" value="5"><span>5</span></label></div>
+                        </div>
+                        <div class="rating-row" data-category="Readability">
+                            <div><div class="name" id="lbl-readability">Readability</div></div>
+                            <div class="seg" role="radiogroup" aria-labelledby="lbl-readability"><label><input type="radio" name="rating-readability" value="" checked><span title="Not assessed">–</span></label><label><input type="radio" name="rating-readability" value="1"><span>1</span></label><label><input type="radio" name="rating-readability" value="2"><span>2</span></label><label><input type="radio" name="rating-readability" value="3"><span>3</span></label><label><input type="radio" name="rating-readability" value="4"><span>4</span></label><label><input type="radio" name="rating-readability" value="5"><span>5</span></label></div>
+                        </div>
+                        <div class="rating-row" data-category="Performance">
+                            <div><div class="name" id="lbl-performance">Performance</div></div>
+                            <div class="seg" role="radiogroup" aria-labelledby="lbl-performance"><label><input type="radio" name="rating-performance" value="" checked><span title="Not assessed">–</span></label><label><input type="radio" name="rating-performance" value="1"><span>1</span></label><label><input type="radio" name="rating-performance" value="2"><span>2</span></label><label><input type="radio" name="rating-performance" value="3"><span>3</span></label><label><input type="radio" name="rating-performance" value="4"><span>4</span></label><label><input type="radio" name="rating-performance" value="5"><span>5</span></label></div>
+                        </div>
+                        <div class="rating-row" data-category="Security">
+                            <div><div class="name" id="lbl-security">Security</div></div>
+                            <div class="seg" role="radiogroup" aria-labelledby="lbl-security"><label><input type="radio" name="rating-security" value="" checked><span title="Not assessed">–</span></label><label><input type="radio" name="rating-security" value="1"><span>1</span></label><label><input type="radio" name="rating-security" value="2"><span>2</span></label><label><input type="radio" name="rating-security" value="3"><span>3</span></label><label><input type="radio" name="rating-security" value="4"><span>4</span></label><label><input type="radio" name="rating-security" value="5"><span>5</span></label></div>
+                        </div>
+                        <div class="rating-row" data-category="Testing">
+                            <div><div class="name" id="lbl-testing">Testing</div></div>
+                            <div class="seg" role="radiogroup" aria-labelledby="lbl-testing"><label><input type="radio" name="rating-testing" value="" checked><span title="Not assessed">–</span></label><label><input type="radio" name="rating-testing" value="1"><span>1</span></label><label><input type="radio" name="rating-testing" value="2"><span>2</span></label><label><input type="radio" name="rating-testing" value="3"><span>3</span></label><label><input type="radio" name="rating-testing" value="4"><span>4</span></label><label><input type="radio" name="rating-testing" value="5"><span>5</span></label></div>
+                        </div>
+                        <div class="rating-row" data-category="Documentation">
+                            <div><div class="name" id="lbl-documentation">Documentation</div></div>
+                            <div class="seg" role="radiogroup" aria-labelledby="lbl-documentation"><label><input type="radio" name="rating-documentation" value="" checked><span title="Not assessed">–</span></label><label><input type="radio" name="rating-documentation" value="1"><span>1</span></label><label><input type="radio" name="rating-documentation" value="2"><span>2</span></label><label><input type="radio" name="rating-documentation" value="3"><span>3</span></label><label><input type="radio" name="rating-documentation" value="4"><span>4</span></label><label><input type="radio" name="rating-documentation" value="5"><span>5</span></label></div>
+                        </div>
+                        </div>
+                        <div class="field" style="margin-top:18px">
+                            <label for="feedback">Written feedback</label>
+                            <textarea id="feedback" class="textarea" placeholder="What works well? What should change, and why?"></textarea>
+                        </div>
+                        <div class="row wrap" style="margin-top:16px">
+                            <button type="button" id="approveButton" class="btn success lg">✓ Approve</button>
+                            <button type="button" id="changesButton" class="btn danger lg">✎ Request changes</button>
+                        </div>
+                        <p id="message" class="form-msg" role="status" aria-live="polite" style="margin-top:14px"></p>
+                    </form>
+                </section>
+            </div>
+
+            <aside class="rev-rail">
+                <section class="card">
+                    <div class="card-head"><div><h2>Review workflow</h2></div></div>
+                    <ol class="stack" style="padding-left:20px;margin:0">
+                        <li>Open the pull request on GitHub.</li>
+                        <li>Read the changed files, added and removed lines.</li>
+                        <li>Return here and rate the categories you assessed.</li>
+                        <li>Write your feedback.</li>
+                        <li>Approve, or request changes.</li>
+                    </ol>
+                </section>
+            </aside>
+        </div>
+    </main>
+
+    <script type="module" src="../js/review-pr.js"></script>
+</body>
+
+</html>

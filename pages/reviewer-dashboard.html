@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <title>Reviewer Dashboard | PeerReview</title>
+    <link rel="stylesheet" href="../css/app.css">
+    <link rel="stylesheet" href="../css/roles.css">
+    <script src="../js/mode.js"></script>
+</head>
+
+<body data-role="reviewer">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="rev-topbar">
+        <a class="brand" href="reviewer-dashboard.html"><span class="brand-mark">PR</span><span><b>PeerReview</b><small>Reviewer</small></span></a>
+        <nav class="rev-nav" aria-label="Reviewer sections">
+            <a href="reviewer-dashboard.html" class="active" aria-current="page"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13l3-8h12l3 8v6H3z"/><path d="M3 13h5l1 3h6l1-3h5"/></svg>Dashboard</a>
+            <a href="assigned-prs.html" class=""><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M6 8.5v7"/><path d="M18 15.5V9a3 3 0 0 0-3-3h-3"/><path d="M14 3.5L11.5 6 14 8.5"/></svg>Assigned to me</a>
+            <a href="pending-reviews.html" class=""><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Pending reviews</a>
+            <a href="review-history.html" class=""><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>My review history</a>
+            <a href="skill-growth.html" class=""><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>My skill growth</a>
+        </nav>
+        <div class="rev-user">
+            <span class="name" data-user-name>Loading...</span>
+            <span class="avatar" data-user-initials>?</span>
+            <a href="../index.html" id="logoutLink" class="btn ghost sm">Logout</a>
+        </div>
+    </header>
+
+    <main id="main" class="rev-main">
+        <h1 class="greeting" id="greeting">Welcome back</h1>
+
+        <section class="rev-attention" aria-labelledby="attTitle">
+            <div>
+                <p class="cap" id="attTitle">Waiting for your review</p>
+                <div class="big" id="pendingBig">0</div>
+                <p class="cap" id="attentionText">Loading your queue...</p>
+            </div>
+            <div class="stack" style="justify-items:start">
+                <div class="chips" id="attentionChips"></div>
+                <a id="startNext" class="btn primary lg" href="pending-reviews.html">Start next review →</a>
+            </div>
+        </section>
+
+        <div class="rev-layout">
+            <div class="stack lg">
+                <section class="card" id="pending" aria-labelledby="h-queue">
+                    <div class="card-head"><div><h2 id="h-queue">Priority queue</h2><p>Overdue first, then priority, then longest waiting</p></div>
+                        <div class="actions"><a class="btn sm" href="pending-reviews.html">View all</a></div></div>
+                    <div class="stack" id="pendingReviewList"></div>
+                </section>
+
+                <section class="card" id="assigned" aria-labelledby="h-assigned">
+                    <div class="card-head"><div><h2 id="h-assigned">Assigned pull requests</h2><p>Everything assigned to you, including finished reviews</p></div>
+                        <div class="actions"><a class="btn sm" href="assigned-prs.html">View all</a></div></div>
+                    <div class="stack" id="assignedPRList"></div>
+                </section>
+
+                <section class="card" id="history" aria-labelledby="h-hist">
+                    <div class="card-head"><div><h2 id="h-hist">Recent review history</h2></div>
+                        <div class="actions"><a class="btn sm" href="review-history.html">View all</a></div></div>
+                    <div class="stack" id="historyPreview"></div>
+                </section>
+            </div>
+
+            <aside class="rev-rail" aria-label="Reviewer statistics">
+                <section class="card">
+                    <div class="card-head"><div><h2>At a glance</h2></div></div>
+                    <div class="stack">
+                        <div class="rev-metric"><span class="muted">Assigned</span><b id="assignedPRCount">0</b></div>
+                        <div class="rev-metric"><span class="muted">Pending</span><b id="pendingReviewCount">0</b></div>
+                        <div class="rev-metric"><span class="muted">Overdue</span><b id="overdueCount">0</b></div>
+                        <div class="rev-metric"><span class="muted">Completed reviews</span><b id="completedReviewCount">0</b></div>
+                        <div class="rev-metric"><span class="muted">Avg. turnaround</span><b id="avgTurnaround">n/a</b></div>
+                    </div>
+                </section>
+                <section class="card" id="growth">
+                    <div class="card-head"><div><h2>Decision split</h2></div></div>
+                    <div id="approvalChart"></div>
+                </section>
+                <section class="card">
+                    <div class="card-head"><div><h2>Reviewer activity</h2><p>Reviews written per category</p></div>
+                        <div class="actions"><a class="btn sm" href="skill-growth.html">Details</a></div></div>
+                    <div id="growthSummary"></div>
+                </section>
+                <section class="card">
+                    <div class="card-head"><div><h2>Recent activity</h2></div></div>
+                    <div id="recentActivity"></div>
+                </section>
+            </aside>
+        </div>
+    </main>
+
+    <script type="module" src="../js/reviewer-dashboard.js"></script>
+</body>
+
+</html>

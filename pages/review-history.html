@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <title>My Review History | PeerReview</title>
+    <link rel="stylesheet" href="../css/app.css">
+    <link rel="stylesheet" href="../css/roles.css">
+    <script src="../js/mode.js"></script>
+</head>
+
+<body data-role="reviewer">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="rev-topbar">
+        <a class="brand" href="reviewer-dashboard.html"><span class="brand-mark">PR</span><span><b>PeerReview</b><small>Reviewer</small></span></a>
+        <nav class="rev-nav" aria-label="Reviewer sections">
+            <a href="reviewer-dashboard.html" class=""><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13l3-8h12l3 8v6H3z"/><path d="M3 13h5l1 3h6l1-3h5"/></svg>Dashboard</a>
+            <a href="assigned-prs.html" class=""><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M6 8.5v7"/><path d="M18 15.5V9a3 3 0 0 0-3-3h-3"/><path d="M14 3.5L11.5 6 14 8.5"/></svg>Assigned to me</a>
+            <a href="pending-reviews.html" class=""><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Pending reviews</a>
+            <a href="review-history.html" class="active" aria-current="page"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>My review history</a>
+            <a href="skill-growth.html" class=""><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>My skill growth</a>
+        </nav>
+        <div class="rev-user">
+            <span class="name" data-user-name>Loading...</span>
+            <span class="avatar" data-user-initials>?</span>
+            <a href="../index.html" id="logoutLink" class="btn ghost sm">Logout</a>
+        </div>
+    </header>
+
+    <main id="main" class="rev-main stack lg">
+        <header><h1>My review history</h1><p class="muted">Every review you have submitted, saved in Firestore.</p></header>
+        <section class="grid">
+            <div class="card stat span-4"><span class="k">Total reviews</span><span class="v" id="totalReviews">0</span><span class="s">All submitted reviews</span></div>
+            <div class="card stat span-4"><span class="k">Approved</span><span class="v" id="approvedReviews">0</span><span class="s">Pull requests approved</span></div>
+            <div class="card stat span-4"><span class="k">Changes requested</span><span class="v" id="changesReviews">0</span><span class="s">Sent back to developers</span></div>
+        </section>
+        <section class="card">
+            <div class="toolbar">
+                <div class="search"><input type="search" id="searchReviews" class="input" placeholder="Search by PR title, feedback or category" aria-label="Search reviews"></div>
+                <select id="statusFilter" class="select" aria-label="Filter by status">
+                    <option value="all">All statuses</option>
+                    <option value="approved">Approved</option>
+                    <option value="changes requested">Changes Requested</option>
+                </select>
+                <select id="categoryFilter" class="select" aria-label="Filter by category">
+                    <option value="all">All categories</option>
+                    <option value="code quality">Code Quality</option>
+                    <option value="readability">Readability</option>
+                    <option value="performance">Performance</option>
+                    <option value="security">Security</option>
+                    <option value="testing">Testing</option>
+                    <option value="documentation">Documentation</option>
+                </select>
+            </div>
+            <p class="muted small" id="resultCount" style="margin-bottom:12px">Loading reviews...</p>
+            <div class="stack" id="historyList"></div>
+        </section>
+    </main>
+
+    <script type="module" src="../js/review-history.js"></script>
+</body>
+
+</html>

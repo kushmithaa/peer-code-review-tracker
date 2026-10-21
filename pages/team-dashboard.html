@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <title>Team Lead Dashboard | PeerReview</title>
+    <link rel="stylesheet" href="../css/app.css">
+    <link rel="stylesheet" href="../css/roles.css">
+    <script src="../js/mode.js"></script>
+</head>
+
+<body data-role="team">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <div class="team-shell">
+        <nav class="team-rail" aria-label="Team Lead sections">
+            <span class="brand-mark" aria-hidden="true">PR</span>
+        <a href="#overview" data-view="overview" class="active"><span class="ico"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>Overview</a>
+        <a href="#members" data-view="members" class=""><span class="ico"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.5 3.2-5.5 6.5-5.5s5.9 2 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7"/><path d="M18 14.8c1.9.7 3.2 2.4 3.5 5.2"/></svg></span>Members</a>
+        <a href="#prs" data-view="prs" class=""><span class="ico"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M6 8.5v7"/><path d="M18 15.5V9a3 3 0 0 0-3-3h-3"/><path d="M14 3.5L11.5 6 14 8.5"/></svg></span>PRs</a>
+        <a href="#reviews" data-view="reviews" class=""><span class="ico"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.5 7.2L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></span>Reviews</a>
+        <a href="#skills" data-view="skills" class=""><span class="ico"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>Skills</a>
+        <a href="#manage" data-view="manage" class=""><span class="ico"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg></span>Manage</a>
+            <div class="rail-foot"><a href="../index.html" id="logoutLink"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5V3h4M16 17l5-5-5-5M21 12H9"/></svg>Logout</a></div>
+        </nav>
+
+        <div class="team-main">
+            <header class="team-bar">
+                <h1 id="viewTitle">Team overview</h1>
+                <div class="row wrap" id="filters" role="group" aria-label="Analytics filters">
+                    <select id="fMember" class="select" aria-label="Team member"><option value="all">All members</option></select>
+                    <select id="fStatus" class="select" aria-label="PR status">
+                        <option value="all">All statuses</option><option>Open</option><option>In Review</option>
+                        <option>Changes Requested</option><option>Approved</option><option>Merged</option>
+                    </select>
+                    <select id="fRange" class="select" aria-label="Date range">
+                        <option value="all">All time</option><option value="7">Last 7 days</option>
+                        <option value="30">Last 30 days</option><option value="90">Last 90 days</option>
+                    </select>
+                    <select id="fData" class="select hidden" aria-label="Data origin">
+                        <option value="all">Real + demo data</option><option value="real">Real data only</option><option value="demo">Demo data only</option>
+                    </select>
+                </div>
+                <span class="chip"><span data-user-name>Loading...</span></span>
+            </header>
+
+            <main id="main" class="team-body">
+                <div id="pageNotice"></div>
+
+                <div class="kpi-strip" id="kpis">
+                    <div class="kpi "><div class="k">Team members</div><div class="v" id="statMembers">0</div><div class="s" id="statMembersSub"></div></div>
+                    <div class="kpi "><div class="k">Pull requests</div><div class="v" id="statPrs">0</div><div class="s" id="statPrsSub"></div></div>
+                    <div class="kpi alert"><div class="k">Pending reviews</div><div class="v" id="statPending">0</div><div class="s" id="statPendingSub">Assigned, not reviewed</div></div>
+                    <div class="kpi "><div class="k">Reviews completed</div><div class="v" id="statReviews">0</div><div class="s" id="statReviewsSub"></div></div>
+                    <div class="kpi "><div class="k">Approval rate</div><div class="v" id="kpiApproval">0</div><div class="s" id="kpiApprovalSub">of completed reviews</div></div>
+                    <div class="kpi "><div class="k">Changes requested</div><div class="v" id="kpiChanges">0</div><div class="s" id="kpiChangesSub">of completed reviews</div></div>
+                </div>
+
+                <!-- OVERVIEW -->
+                <section class="view active" id="view-overview">
+                    <div class="grid">
+                        <section class="card span-4"><div class="card-head"><h2>PR status</h2></div><div id="ovStatus"></div></section>
+                        <section class="card span-4"><div class="card-head"><h2>PRs created per week</h2></div><div id="ovWeekly"></div></section>
+                        <section class="card span-4"><div class="card-head"><h2>Reviewer workload</h2></div><div id="ovWorkload"></div></section>
+                        <section class="card span-5"><div class="card-head"><h2>Team skill profile</h2><a class="btn sm" href="#skills">Details</a></div><div id="ovSkills"></div></section>
+                        <section class="card span-7"><div class="card-head"><h2>Member performance</h2><a class="btn sm" href="#members">All members</a></div><div id="ovPerformance"></div></section>
+                        <section class="card span-6"><div class="card-head"><h2>Needs attention</h2></div><div id="ovAttention" class="stack"></div></section>
+                        <section class="card span-6"><div class="card-head"><h2>Team activity</h2></div><div id="ovTimeline"></div></section>
+                    </div>
+                </section>
+
+                <!-- MEMBERS -->
+                <section class="view" id="view-members">
+                    <div class="card"><div class="card-head"><div><h2>Team members</h2><p>Registered users, roles and activity</p></div></div>
+                        <div class="table-wrap" id="membersTable"></div></div>
+                </section>
+
+                <!-- PR ACTIVITY -->
+                <section class="view" id="view-prs">
+                    <div class="grid">
+                        <section class="card span-6"><div class="card-head"><h2>By status</h2></div><div id="prStatusBars"></div></section>
+                        <section class="card span-6"><div class="card-head"><h2>Created per month</h2></div><div id="prMonthly"></div></section>
+                        <section class="card span-12"><div class="card-head"><h2>All pull requests</h2></div><div class="table-wrap" id="prTable"></div></section>
+                    </div>
+                </section>
+
+                <!-- REVIEW ACTIVITY -->
+                <section class="view" id="view-reviews">
+                    <div class="card"><div class="card-head"><div><h2>Review activity</h2><p>Reviewer workload and turnaround</p></div></div>
+                        <p class="notice" id="turnaround" style="margin-bottom:14px"></p>
+                        <div class="table-wrap" id="reviewerTable"></div></div>
+                </section>
+
+                <!-- SKILLS -->
+                <section class="view" id="view-skills">
+                    <div class="grid">
+                        <section class="card span-12"><div class="card-head"><div><h2>Team skill growth analytics</h2><p>Pooled from rated reviews across the team</p></div></div><div id="teamSkills"></div></section>
+                        <section class="card span-12"><div class="card-head"><h2>By developer</h2></div><div class="table-wrap" id="devSkillsTable"></div></section>
+                    </div>
+                </section>
+
+                <!-- MANAGE -->
+                <section class="view" id="view-manage">
+                    <div class="card">
+                        <div class="card-head"><div><h2>Reviewer / PR management</h2><p>Assign reviewers, link developers and monitor pending reviews (filters above do not apply here)</p></div>
+                            <div class="actions"><button class="btn primary" type="button" id="openPrDialog"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Add pull request</button></div></div>
+                        <div id="legacyBox"></div>
+                        <div class="toolbar">
+                            <div class="search"><input type="search" id="searchManage" class="input" placeholder="Search title, repository or developer" aria-label="Search pull requests"></div>
+                            <select id="manageFilter" class="select" aria-label="Filter">
+                                <option value="all">All pull requests</option>
+                                <option value="unassigned">Unassigned (no reviewer)</option>
+                                <option value="pending">Pending review</option>
+                                <option value="no-author">No developer linked</option>
+                            </select>
+                        </div>
+                        <div class="table-wrap" id="manageTable"></div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <dialog id="prDialog" aria-labelledby="dlgTitle">
+        <div class="dialog-body">
+            <div class="card-head"><div><h2 id="dlgTitle">Add a pull request</h2><p>Register a GitHub pull request for a developer</p></div>
+                <button class="btn ghost sm" type="button" data-close-dialog aria-label="Close dialog">✕</button></div>
+            <div id="prFormHost"></div>
+        </div>
+    </dialog>
+
+    <script type="module" src="../js/team-dashboard.js"></script>
+</body>
+
+</html>

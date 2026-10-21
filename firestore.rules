@@ -1,0 +1,244 @@
+rules_version = '2';
+
+// Peer Code Review & Skill-Growth Tracker - Firestore Security Rules (v3, audited)
+//
+// Roles live in users/{uid}.role : "Developer" | "Reviewer" | "Team Lead"
+// ("Team" is the legacy stored value for Team Lead and is treated the same).
+//
+// Core guarantees
+//   * Nobody can grant themselves a role: profiles are created as Developer or Reviewer only,
+//     and after creation only `name` may ever be edited. Team Lead is set in the Firebase
+//     console / Admin SDK, never from the app.
+//   * A review can only be written by the reviewer ASSIGNED to a PR that is still pending, and
+//     it must be committed together with the PR status change (and vice versa).
+//   * Every client-written timestamp must equal the server time (request.time).
+//   * Saved reviews are immutable (a Team Lead may only back-fill a missing authorId).
+//   * Nothing can be deleted by clients.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------------------------------------------------------------- helpers
+    function signedIn() { return request.auth != null; }
+
+    function userData(uid) { return get(/databases/$(database)/documents/users/$(uid)).data; }
+    function hasProfile() {
+      return signedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+    function myProfile() { return userData(request.auth.uid); }
+    function myRole()    { return myProfile().role; }
+
+    function isLead()      { return hasProfile() && (myRole() == 'Team Lead' || myRole() == 'Team'); }
+    function isReviewer()  { return hasProfile() && myRole() == 'Reviewer'; }
+    function isDeveloper() { return hasProfile() && myRole() == 'Developer'; }
+
+    function prData(id)  { return get(/databases/$(database)/documents/pullRequests/$(id)).data; }
+    function prAfter(id) { return getAfter(/databases/$(database)/documents/pullRequests/$(id)).data; }
+
+    function changedKeys() { return request.resource.data.diff(resource.data).affectedKeys(); }
+
+    function statuses()   { return ['Open', 'In Review', 'Changes Requested', 'Approved', 'Merged']; }
+    function categories() { return ['Code Quality', 'Readability', 'Performance', 'Security', 'Testing', 'Documentation']; }
+
+    function validPriority(d) { return !('priority' in d) || d.priority in ['High', 'Medium', 'Low']; }
+
+    function okRating(r, k) { return !(k in r) || (r[k] is int && r[k] >= 1 && r[k] <= 5); }
+    function validRatings(r) {
+      return r is map
+        && r.size() >= 1
+        && r.keys().hasOnly(categories())
+        && okRating(r, 'Code Quality') && okRating(r, 'Readability') && okRating(r, 'Performance')
+        && okRating(r, 'Security') && okRating(r, 'Testing') && okRating(r, 'Documentation');
+    }
+
+    // ------------------------------------------------------------------ users
+    match /users/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || isLead());
+
+      // Self-registration: own uid, Developer or Reviewer only, exact field set,
+      // and the stored email must be the one Firebase Auth authenticated.
+      allow create: if signedIn()
+        && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['uid', 'name', 'email', 'role', 'createdAt'])
+        && request.resource.data.keys().hasAll(['uid', 'name', 'email', 'role', 'createdAt'])
+        && request.resource.data.uid == uid
+        && request.resource.data.role in ['Developer', 'Reviewer']
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 100
+        && request.resource.data.email is string
+        && request.resource.data.email.lower() == request.auth.token.email.lower()
+        && request.resource.data.createdAt is string;
+
+      // The ONLY editable field is `name`. role, uid, email, createdAt and any other
+      // field (added or removed) are protected.
+      allow update: if signedIn()
+        && request.auth.uid == uid
+        && changedKeys().hasOnly(['name'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 100;
+
+      allow delete: if false;
+    }
+
+    // -------------------------------------------------------- pull requests
+    function prKeys() {
+      return ['title', 'description', 'number', 'repository', 'repositoryUrl', 'githubUrl', 'status', 'priority',
+              'dueDate', 'authorId', 'authorName', 'reviewerId', 'reviewerName', 'source', 'createdAt', 'updatedAt'];
+    }
+    function prRequired() {
+      return ['title', 'number', 'repository', 'githubUrl', 'status', 'authorId', 'authorName', 'reviewerId', 'createdAt', 'updatedAt'];
+    }
+
+    // Shape + validation shared by every PR creation.
+    function prShapeOk(d) {
+      return d.keys().hasOnly(prKeys())
+        && d.keys().hasAll(prRequired())
+        && d.title is string && d.title.size() > 0 && d.title.size() <= 200
+        && (!('description' in d) || d.description == null || (d.description is string && d.description.size() <= 2000))
+        && d.number is int && d.number > 0
+        && d.repository is string
+        && d.githubUrl is string
+        && d.githubUrl.matches('^https://github\\.com/[^/]+/[^/]+/pull/[0-9]+/?$')
+        && validPriority(d)
+        && (!('dueDate' in d) || d.dueDate == null || d.dueDate is timestamp)
+        && (!('source' in d) || d.source in ['manual', 'github'])
+        && d.authorId is string
+        && d.authorName is string
+        && (d.reviewerId == null || d.reviewerId is string)
+        && d.createdAt == request.time
+        && d.updatedAt == request.time;
+    }
+
+    // Transitions the Team Lead may make: keep the status, reopen it, or mark an Approved PR Merged.
+    function leadStatusOk() {
+      return request.resource.data.get('status', null) == resource.data.get('status', null)
+        || request.resource.data.get('status', null) == 'Open'
+        || (request.resource.data.get('status', null) == 'Merged' && resource.data.get('status', null) == 'Approved');
+    }
+
+    match /pullRequests/{prId} {
+      allow read: if signedIn() && (
+        isLead() ||
+        resource.data.reviewerId == request.auth.uid ||
+        resource.data.authorId == request.auth.uid
+      );
+
+      allow create: if signedIn() && prShapeOk(request.resource.data) && (
+        // Team Lead: any valid status, but the referenced people must really be a Developer / Reviewer.
+        (isLead()
+          && request.resource.data.status in statuses()
+          && userData(request.resource.data.authorId).role == 'Developer'
+          && (request.resource.data.reviewerId == null || userData(request.resource.data.reviewerId).role == 'Reviewer')) ||
+        // Developer: only their own, Open, unassigned PR.
+        (isDeveloper()
+          && request.resource.data.authorId == request.auth.uid
+          && request.resource.data.authorName == myProfile().name
+          && request.resource.data.status == 'Open'
+          && request.resource.data.reviewerId == null
+          && (!('reviewerName' in request.resource.data) || request.resource.data.reviewerName == null))
+      );
+
+      allow update: if signedIn() && (
+
+        // ---- Team Lead: assignments, reopen, light edits. Never the identity/history fields.
+        (isLead()
+          && changedKeys().hasOnly(['title', 'description', 'priority', 'dueDate', 'status', 'reviewerId',
+                                    'reviewerName', 'authorId', 'authorName', 'assignedAt', 'updatedAt'])
+          && leadStatusOk()
+          && request.resource.data.updatedAt == request.time
+          && validPriority(request.resource.data)
+          && (!changedKeys().hasAny(['title'])
+              || (request.resource.data.title is string && request.resource.data.title.size() > 0 && request.resource.data.title.size() <= 200))
+          && (!changedKeys().hasAny(['assignedAt']) || request.resource.data.assignedAt == request.time)
+          && (!changedKeys().hasAny(['reviewerId'])
+              || request.resource.data.reviewerId == null
+              || userData(request.resource.data.reviewerId).role == 'Reviewer')
+          && (!changedKeys().hasAny(['authorId']) || userData(request.resource.data.authorId).role == 'Developer')) ||
+
+        // ---- Assigned reviewer: record a decision on a pending PR, and only together with the review
+        //      written in the same transaction (lastReviewId must point at it).
+        (isReviewer()
+          && resource.data.reviewerId == request.auth.uid
+          && resource.data.status in ['Open', 'In Review']
+          && changedKeys().hasOnly(['status', 'lastReviewId', 'lastReviewedAt', 'updatedAt'])
+          && request.resource.data.status in ['Approved', 'Changes Requested']
+          && request.resource.data.lastReviewedAt == request.time
+          && request.resource.data.updatedAt == request.time
+          && request.resource.data.lastReviewId is string
+          && existsAfter(/databases/$(database)/documents/reviews/$(request.resource.data.lastReviewId))
+          && getAfter(/databases/$(database)/documents/reviews/$(request.resource.data.lastReviewId)).data.pullRequestId == prId
+          && getAfter(/databases/$(database)/documents/reviews/$(request.resource.data.lastReviewId)).data.reviewerId == request.auth.uid
+          && getAfter(/databases/$(database)/documents/reviews/$(request.resource.data.lastReviewId)).data.status == request.resource.data.status) ||
+
+        // ---- Author: request a re-review of their own PR after changes were requested. Nothing else.
+        (isDeveloper()
+          && resource.data.authorId == request.auth.uid
+          && resource.data.status == 'Changes Requested'
+          && changedKeys().hasOnly(['status', 'updatedAt'])
+          && request.resource.data.status == 'In Review'
+          && request.resource.data.updatedAt == request.time)
+      );
+
+      allow delete: if false;
+    }
+
+    // --------------------------------------------------------------- reviews
+    function reviewKeys() {
+      return ['pullRequestId', 'pullRequestTitle', 'pullRequestNumber', 'repository', 'githubUrl', 'authorId', 'authorName',
+              'reviewerId', 'reviewerName', 'category', 'rating', 'ratings', 'feedback', 'status', 'createdAt'];
+    }
+
+    match /reviews/{reviewId} {
+      allow read: if signedIn() && (
+        isLead() ||
+        resource.data.reviewerId == request.auth.uid ||
+        resource.data.authorId == request.auth.uid
+      );
+
+      // Only the ASSIGNED reviewer, only as themselves, only on a still-pending PR, with valid content,
+      // denormalised PR fields that match the real PR, a server timestamp, and in the same
+      // transaction/batch that moves the PR to the same decision.
+      allow create: if isReviewer()
+        && request.resource.data.keys().hasOnly(reviewKeys())
+        && request.resource.data.keys().hasAll(reviewKeys())
+        && request.resource.data.reviewerId == request.auth.uid
+        && request.resource.data.reviewerName == myProfile().name
+        && request.resource.data.status in ['Approved', 'Changes Requested']
+        && request.resource.data.category in categories()
+        && request.resource.data.rating is int
+        && request.resource.data.rating >= 1
+        && request.resource.data.rating <= 5
+        && validRatings(request.resource.data.ratings)
+        && request.resource.data.ratings[request.resource.data.category] == request.resource.data.rating
+        && request.resource.data.feedback is string
+        && request.resource.data.feedback.size() > 0
+        && request.resource.data.feedback.size() <= 5000
+        && request.resource.data.createdAt == request.time
+        && prData(request.resource.data.pullRequestId).reviewerId == request.auth.uid
+        && prData(request.resource.data.pullRequestId).status in ['Open', 'In Review']
+        && request.resource.data.authorId == prData(request.resource.data.pullRequestId).get('authorId', null)
+        && request.resource.data.authorId != request.auth.uid
+        && request.resource.data.authorName == prData(request.resource.data.pullRequestId).get('authorName', null)
+        && request.resource.data.pullRequestTitle == prData(request.resource.data.pullRequestId).get('title', '')
+        && request.resource.data.pullRequestNumber == prData(request.resource.data.pullRequestId).get('number', null)
+        && request.resource.data.repository == prData(request.resource.data.pullRequestId).get('repository', null)
+        && request.resource.data.githubUrl == prData(request.resource.data.pullRequestId).get('githubUrl', null)
+        && prAfter(request.resource.data.pullRequestId).status == request.resource.data.status;
+
+      // A Team Lead may only FILL IN a missing authorId, copied from the review's own pull request
+      // (the "Link legacy reviews" action). Nothing else about a saved review can change.
+      allow update: if isLead()
+        && changedKeys().hasOnly(['authorId'])
+        && resource.data.get('authorId', null) == null
+        && request.resource.data.authorId is string
+        && request.resource.data.authorId == prData(resource.data.pullRequestId).get('authorId', null);
+
+      allow delete: if false;
+    }
+
+    // Everything else is closed.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

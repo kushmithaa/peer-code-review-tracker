@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "firebase": "^12.19.0"
+  },
+  "scripts": {
+    "start": "node scripts/dev-server.mjs 3000",
+    "test": "node --import ./tests/register.mjs --test tests/unit.test.mjs tests/e2e.test.mjs tests/static.test.mjs tests/seed.test.mjs tests/payloads.test.mjs tests/audit.test.mjs",
+    "test:browser": "playwright test",
+    "test:rules": "npx --yes firebase-tools@13 emulators:exec --only firestore --project demo-pcrt-rules \"node --test tests/rules/rules.test.mjs\"",
+    "test:all": "npm test && npm run test:browser && npm run test:rules",
+    "seed:dry": "node scripts/seed-firebase.mjs --project peer-code-review-tracker",
+    "seed:emulator": "node scripts/seed-firebase.mjs --emulator --project demo-pcrt --confirm demo-pcrt",
+    "seed:live": "node scripts/seed-firebase.mjs --project peer-code-review-tracker --confirm peer-code-review-tracker",
+    "audit:schema": "node scripts/audit-schema.mjs --project peer-code-review-tracker"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^5.0.1",
+    "@playwright/test": "^1.56.0",
+    "firebase-admin": "^13.10.0",
+    "jsdom": "^24.1.3"
+  },
+  "private": true,
+  "type": "module",
+  "name": "peer-code-review-tracker",
+  "description": "Peer Code Review & Skill-Growth Tracker (HTML, CSS, JS modules, Firebase Auth, Firestore)"
+}

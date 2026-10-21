@@ -1,0 +1,11 @@
+node_modules/
+.env
+.firebase/
+.DS_Store
+test-results/
+playwright-report/
+*.log
+# never commit credentials
+serviceAccount*.json
+*-firebase-adminsdk-*.json
+*.pem

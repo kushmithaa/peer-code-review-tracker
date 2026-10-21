@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <title>Create account | PeerReview</title>
+    <link rel="stylesheet" href="../css/app.css">
+    <link rel="stylesheet" href="../css/roles.css">
+    <script src="../js/mode.js"></script>
+</head>
+
+<body data-role="auth">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <div class="auth-shell">
+        <section class="auth-brand" aria-hidden="false">
+            <a class="brand" href="../index.html"><span class="brand-mark">PR</span><span><b>PeerReview</b><small>Code review &amp; skill growth</small></span></a>
+            <h1>Better reviews. Faster growth.</h1>
+            <div class="auth-points">
+                <div><b>Developers</b><span>Track pull requests, read feedback and watch category skills improve.</span></div>
+                <div><b>Reviewers</b><span>A prioritised queue, clear GitHub hand-off and structured 1–5 ratings.</span></div>
+                <div><b>Team Leads</b><span>Workload, turnaround and skill-gap analytics, with reviewer assignment.</span></div>
+            </div>
+        </section>
+        <section class="auth-card-wrap" id="main">
+            <div class="auth-card">
+
+                <div><h2 style="font-size:1.5rem">Create your account</h2><p class="muted">Developers and reviewers can sign up here. Team Lead accounts are created by an administrator.</p></div>
+                <div class="stack">
+                    <div class="field"><label for="name">Full name</label><input class="input" id="name" type="text" autocomplete="name"></div>
+                    <div class="field"><label for="email">Email</label><input class="input" id="email" type="email" autocomplete="email"></div>
+                    <div class="field"><label for="password">Password (6+ characters)</label><input class="input" id="password" type="password" autocomplete="new-password"></div>
+                    <div class="field"><label for="role">I am a</label>
+                        <select class="select" id="role"><option value="">Select role...</option><option value="Developer">Developer</option><option value="Reviewer">Reviewer</option></select></div>
+                    <button class="btn primary lg block" id="registerBtn" type="button">Create Account</button>
+                    <p class="form-msg" id="message" role="status" aria-live="polite"></p>
+                    <p class="muted small">Already registered? <a href="../index.html">Login</a></p>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <script type="module" src="../js/register.js"></script>
+</body>
+
+</html>

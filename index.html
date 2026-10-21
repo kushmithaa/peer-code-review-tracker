@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <title>Login | PeerReview</title>
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/roles.css">
+    <script src="js/mode.js"></script>
+</head>
+
+<body data-role="auth">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <div class="auth-shell">
+        <section class="auth-brand" aria-hidden="false">
+            <a class="brand" href="index.html"><span class="brand-mark">PR</span><span><b>PeerReview</b><small>Code review &amp; skill growth</small></span></a>
+            <h1>Better reviews. Faster growth.</h1>
+            <div class="auth-points">
+                <div><b>Developers</b><span>Track pull requests, read feedback and watch category skills improve.</span></div>
+                <div><b>Reviewers</b><span>A prioritised queue, clear GitHub hand-off and structured 1–5 ratings.</span></div>
+                <div><b>Team Leads</b><span>Workload, turnaround and skill-gap analytics, with reviewer assignment.</span></div>
+            </div>
+        </section>
+        <section class="auth-card-wrap" id="main">
+            <div class="auth-card">
+
+                <div><h2 style="font-size:1.5rem">Welcome back</h2><p class="muted">Sign in to your workspace.</p></div>
+
+                <div id="demoPanel" class="stack hidden">
+                    <p class="notice warn"><strong>Demo mode.</strong> Choose a sample user to explore. Sample data stays in this browser; nothing is sent to Firebase and no passwords are used.</p>
+                    <div class="persona-grid" id="personaGrid" role="list"></div>
+                    <a class="small" href="index.html?demo=0">Exit demo mode</a>
+                </div>
+
+                <div id="livePanel" class="stack">
+                    <div class="field"><label for="email">Email</label>
+                        <input class="input" id="email" type="email" autocomplete="username" placeholder="you@example.com"></div>
+                    <div class="field"><label for="password">Password</label>
+                        <input class="input" id="password" type="password" autocomplete="current-password" placeholder="Your password"></div>
+                    <button class="btn primary lg block" id="loginBtn" type="button">Login</button>
+                    <p class="form-msg" id="message" role="status" aria-live="polite"></p>
+                    <p class="muted small">New here? <a href="pages/register.html">Create an account</a> ·
+                        <a href="index.html?demo=1">Try the demo</a></p>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+</body>
+
+</html>
